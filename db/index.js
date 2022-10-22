@@ -5,20 +5,21 @@ class DB {
     this.connection = connection;
   }
 
-  // connection functions with promise wrapper
-  // ideally I could make these smaller modules by type, but not rn
+  // connection functions with mysql2 promise function
+  // ideally I could make these smaller...
 
   // employee functions
-  // create new, update, remove, update manager
-  // view employees, view by dept, view by manager
 
-  addEmp(employee) {
+  // create new, update, remove, update manager
+  // view employees, view by dept, view by manager, view manager
+
+  addEmps(employee) {
     return this.connection
       .promise()
       .query("INSERT INTO employee SET ?", employee);
   }
 
-  updateEmp(employeeId, roleId) {
+  updateEmps(employeeId, roleId) {
     return this.connection
       .promise()
       .query("UPDATE employee SET role_id = ? WHERE id = ?", [
@@ -27,13 +28,13 @@ class DB {
       ]);
   }
 
-  removeEmp(employeeId) {
+  removeEmps(employeeId) {
     return this.connection
       .promise()
       .query("DELETE FROM employee WHERE id = ?", employeeId);
   }
 
-  updateEmpManager(employeeId, managerId) {
+  updateEmpsManager(employeeId, managerId) {
     return this.connection
       .promise()
       .query("UPDATE employee SET manager_id = ? WHERE id = ?", [
@@ -42,7 +43,7 @@ class DB {
       ]);
   }
 
-  viewAllEmp() {
+  viewAllEmps() {
     return this.connection
       .promise()
       .query(
@@ -50,7 +51,7 @@ class DB {
       );
   }
 
-  viewEmpByDept(departmentId) {
+  viewEmpsByDept(departmentId) {
     return this.connection
       .promise()
       .query(
@@ -59,7 +60,7 @@ class DB {
       );
   }
 
-  viewEmpByManager(managerId) {
+  viewEmpsByManager(managerId) {
     return this.connection
       .promise()
       .query(
@@ -67,8 +68,6 @@ class DB {
         managerId
       );
   }
-
-  // view managers
 
   viewManagers(employeeId) {
     return this.connection
@@ -82,17 +81,17 @@ class DB {
   // role functions
   // create role, remove role, view roles
 
-  addRole(role) {
+  addRoles(role) {
     return this.connection.promise().query("INSERT INTO role SET ?", role);
   }
 
-  removeRole(roleId) {
+  removeRoles(roleId) {
     return this.connection
       .promise()
       .query("DELETE FROM role WHERE id = ?", roleId);
   }
 
-  viewRoles() {
+  viewAllRoles() {
     return this.connection
       .promise()
       .query(
@@ -104,13 +103,13 @@ class DB {
   // create dept, remove dept
   // view depts, view total sum of dept salaries
 
-  addDept(department) {
+  addDepts(department) {
     return this.connection
       .promise()
       .query("INSERT INTO department SET ?", department);
   }
 
-  removeDept(departmentId) {
+  removeDepts(departmentId) {
     return this.connection
       .promise()
       .query("DELETE FROM department WHERE id = ?", departmentId);
