@@ -1,2 +1,5 @@
 node_modules
 *-lock.*
+
+# sqlite database
+employees.db
