@@ -93,6 +93,42 @@ const QUERY_LIST = Object.freeze({
         },
     ],
 });
+
+function dispatchQuery(query) {
+    switch (query.choice) {
+        case COMMANDS.EMPLOYEES_VIEW:
+            break;
+        case COMMANDS.EMPLOYEES_VIEW_BY_DEPARTMENT:
+            break;
+        case COMMANDS.EMPLOYEES_VIEW_BY_MANAGER:
+            break;
+        case COMMANDS.EMPLOYEES_ADD:
+            break;
+        case COMMANDS.EMPLOYEES_REMOVE:
+            break;
+        case COMMANDS.EMPLOYEES_UPDATE_ROLE:
+            break;
+        case COMMANDS.EMPLOYEES_UPDATE_MANAGER:
+            break;
+        case COMMANDS.ROLES_VIEW:
+            break;
+        case COMMANDS.ROLES_ADD:
+            break;
+        case COMMANDS.ROLES_REMOVE:
+            break;
+        case COMMANDS.DEPARTMENTS_VIEW:
+            break;
+        case COMMANDS.DEPARTMENTS_ADD:
+            break;
+        case COMMANDS.DEPARTMENTS_REMOVE:
+            break;
+        case COMMANDS.DEPARTMENTS_VIEW_SALARIES:
+            break;
+        case COMMANDS.QUIT:
+        default:
+            return quit();
+    }
+}
 //destructuring db funcs 
 const { addEmps, updateEmps, removeEmps,
     updateEmpsManager, viewAllEmps, viewEmpsByDept,
@@ -110,35 +146,6 @@ async function start() {
     const logoart = logo({ name: 'Employee Manager' }).render();
     console.log(logoart);
     return await callStack();
-}
-
-function dispatchOne(chosen) {
-    const list = {
-        //employee
-        'ADD_EMP': addEmp(),
-        'REMOVE_EMP': removeEmp(),
-        'VIEW_EMP': viewAllEmps(),
-        'VIEW_EMP_BY_DEPT': viewEmpByDept(),
-        'VIEW_EMP_BY_MANAGER': viewEmpByManager(),
-        'UPDATE_EMP_ROLE': updateEmpRole(),
-        'UPDATE_EMP_MANAGER': updateEmpManager(),
-
-        //department
-        'ADD_DEPT': addDept(),
-        'REMOVE_DEPT': removeDept(),
-        'VIEW_DEPTS': viewAllDepts(),
-        'DEPT_SALARIES': deptBudget(),
-
-        //roles
-        'ADD_ROLE': addRole(),
-        'REMOVE_ROLE': removeRole(),
-        'VIEW_ROLES': viewAllRoles(),
-
-        //exit process
-        'QUIT': QUIT(),
-        default: QUIT()
-    };
-    return (chosen ? list[chosen] : list['default']);
 }
 
 async function userChoices() {
