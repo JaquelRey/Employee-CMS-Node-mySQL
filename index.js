@@ -12,18 +12,18 @@ const { addEmps, updateEmps, removeEmps,
     addDepts, viewAllDepts, viewDeptBudgets } = db
 
 // exit process
-const QUIT = () => {
-    console.log("Goodbye!")
-    process.exit()
+function QUIT() {
+    console.log("Goodbye!");
+    process.exit();
 }
 
-const start = async () => {
-    const logoart = logo({ name: 'Employee Manager' }).render()
-    console.log(logoart)
-    return await callStack()
+async function start() {
+    const logoart = logo({ name: 'Employee Manager' }).render();
+    console.log(logoart);
+    return await callStack();
 }
 
-const dispatchOne = async (chosen) => {
+function dispatchOne(chosen) {
     const list = {
         //employee
         'ADD_EMP': addEmp(),
@@ -48,25 +48,22 @@ const dispatchOne = async (chosen) => {
         //exit process
         'QUIT': QUIT(),
         default: QUIT()
-    }
-    return (chosen ? list[chosen] : list['default'])
+    };
+    return (chosen ? list[chosen] : list['default']);
 }
 
-
-
-const userChoices = async () => {
-    const query = await prompt([queries])
-    const chosen = query.choice
+async function userChoices() {
+    const query = await prompt([queries]);
+    const chosen = query.choice;
     // dispatch table selects next action
-    return dispatchOne(chosen)
+    return dispatchOne(chosen);
 }
-
 
 // func that will begin process
-const callStack = async () => {
+async function callStack() {
     return await userChoices().then(
         callStack()
-    )
+    );
 }
 // do I need another await on callStack??
 
@@ -74,35 +71,33 @@ const callStack = async () => {
 // employee funcs
 
 
-const addEmp = () => {
+function addEmp() { }
 
+async function removeEmp() {
+    const answer = await prompt(empQuery[0]);
+    return Promise.resolve(removeEmps(answer.employeeId));
 }
 
-const removeEmp = async () => {
-    const answer = await prompt(empQuery[0])
-    return Promise.resolve(removeEmps(answer.employeeId))
-}
+function updateEmpRole() { }
 
-const updateEmpRole = () => { }
+function updateEmpManager() { }
 
-const updateEmpManager = () => { }
+function viewEmpByDept() { }
 
-const viewEmpByDept = () => { }
-
-const viewEmpByManager = () => { }
+function viewEmpByManager() { }
 
 
 // department funcs
-const addDept = () => { }
+function addDept() { }
 
-const removeDept = () => { }
+function removeDept() { }
 
-const deptBudget = () => { }
+function deptBudget() { }
 
 
 // role funcs
-const addRole = () => { }
+function addRole() { }
 
-const removeRole = () => { }
+function removeRole() { }
 
-start()
+start();
