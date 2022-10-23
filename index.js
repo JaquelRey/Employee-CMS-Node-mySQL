@@ -31,10 +31,10 @@ const QUERY_LIST = Object.freeze({
     name: "choice",
     message: "What would you like to do?",
     choices: [
-        // {
-        //     name: "View employees",
-        //     value: COMMANDS.EMPLOYEES_VIEW,
-        // },
+        {
+            name: "View employees",
+            value: COMMANDS.EMPLOYEES_VIEW,
+        },
         // {
         //     name: "View employees by department",
         //     value: COMMANDS.EMPLOYEES_VIEW_BY_DEPARTMENT,
@@ -94,36 +94,36 @@ const QUERY_LIST = Object.freeze({
     ],
 });
 
-function dispatchQuery(query) {
+function dispatchQuery(query, db) {
     switch (query.choice) {
         case COMMANDS.EMPLOYEES_VIEW:
             break;
-        case COMMANDS.EMPLOYEES_VIEW_BY_DEPARTMENT:
-            break;
-        case COMMANDS.EMPLOYEES_VIEW_BY_MANAGER:
-            break;
-        case COMMANDS.EMPLOYEES_ADD:
-            break;
-        case COMMANDS.EMPLOYEES_REMOVE:
-            break;
-        case COMMANDS.EMPLOYEES_UPDATE_ROLE:
-            break;
-        case COMMANDS.EMPLOYEES_UPDATE_MANAGER:
-            break;
-        case COMMANDS.ROLES_VIEW:
-            break;
-        case COMMANDS.ROLES_ADD:
-            break;
-        case COMMANDS.ROLES_REMOVE:
-            break;
-        case COMMANDS.DEPARTMENTS_VIEW:
-            break;
-        case COMMANDS.DEPARTMENTS_ADD:
-            break;
-        case COMMANDS.DEPARTMENTS_REMOVE:
-            break;
-        case COMMANDS.DEPARTMENTS_VIEW_SALARIES:
-            break;
+        // case COMMANDS.EMPLOYEES_VIEW_BY_DEPARTMENT:
+        //     break;
+        // case COMMANDS.EMPLOYEES_VIEW_BY_MANAGER:
+        //     break;
+        // case COMMANDS.EMPLOYEES_ADD:
+        //     break;
+        // case COMMANDS.EMPLOYEES_REMOVE:
+        //     break;
+        // case COMMANDS.EMPLOYEES_UPDATE_ROLE:
+        //     break;
+        // case COMMANDS.EMPLOYEES_UPDATE_MANAGER:
+        //     break;
+        // case COMMANDS.ROLES_VIEW:
+        //     break;
+        // case COMMANDS.ROLES_ADD:
+        //     break;
+        // case COMMANDS.ROLES_REMOVE:
+        //     break;
+        // case COMMANDS.DEPARTMENTS_VIEW:
+        //     break;
+        // case COMMANDS.DEPARTMENTS_ADD:
+        //     break;
+        // case COMMANDS.DEPARTMENTS_REMOVE:
+        //     break;
+        // case COMMANDS.DEPARTMENTS_VIEW_SALARIES:
+        //     break;
         case COMMANDS.QUIT:
         default:
             return quit();
@@ -135,12 +135,14 @@ function quit() {
     process.exit();
 }
 
-async function displayUserChoices() {
-    return dispatchQuery(await prompt([QUERY_LIST]));
+async function displayUserChoices(db) {
+    return dispatchQuery(await prompt([QUERY_LIST]), db);
 }
 
 (async function () {
     const db = await database.connect({ verbose: false });
     console.log(logo({ name: 'Employee Manager' }).render());
-    await displayUserChoices();
+    while (true) {
+        await displayUserChoices(db);
+    }
 }());
