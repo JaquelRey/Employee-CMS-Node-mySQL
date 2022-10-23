@@ -17,82 +17,13 @@ const COMMANDS = {
     DEPARTMENTS_VIEW_SALARIES                                  /**/: undefined,
     QUIT                                                       /**/: undefined,
 }
-toEnum(COMMANDS);
-
-const QUERY_LIST = Object.freeze({
-    type: "list",
-    name: "choice",
-    message: "What would you like to do?",
-    choices: [
-        {
-            name: "View employees",
-            value: COMMANDS.EMPLOYEES_VIEW,
-        },
-        // {
-        //     name: "View employees by department",
-        //     value: COMMANDS.EMPLOYEES_VIEW_BY_DEPARTMENT,
-        // },
-        // {
-        //     name: "View employees by manager",
-        //     value: COMMANDS.EMPLOYEES_VIEW_BY_MANAGER,
-        // },
-        // {
-        //     name: "Add employee",
-        //     value: COMMANDS.EMPLOYEES_ADD,
-        // },
-        // {
-        //     name: "Remove employee",
-        //     value: COMMANDS.DEPARTMENTS_REMOVE,
-        // },
-        // {
-        //     name: "Update Employee Role",
-        //     value: COMMANDS.EMPLOYEES_UPDATE_ROLE,
-        // },
-        // {
-        //     name: "Update Employee Manager",
-        //     value: COMMANDS.EMPLOYEES_UPDATE_MANAGER,
-        // },
-        // {
-        //     name: "View All Roles",
-        //     value: COMMANDS.ROLES_VIEW,
-        // },
-        // {
-        //     name: "Add Role",
-        //     value: COMMANDS.ROLES_ADD,
-        // },
-        // {
-        //     name: "Remove Role",
-        //     value: COMMANDS.ROLES_REMOVE,
-        // },
-        // {
-        //     name: "View All Departments",
-        //     value: COMMANDS.DEPARTMENTS_VIEW,
-        // },
-        // {
-        //     name: "Add Department",
-        //     value: COMMANDS.DEPARTMENTS_ADD,
-        // },
-        // {
-        //     name: "Remove Department",
-        //     value: COMMANDS.DEPARTMENTS_REMOVE,
-        // },
-        // {
-        //     name: "View Total Utilized Budget By Department",
-        //     value: COMMANDS.DEPARTMENTS_VIEW_SALARIES,
-        // },
-        {
-            name: "Quit",
-            value: COMMANDS.QUIT,
-        },
-    ],
-});
 
 function quit() {
     console.log("Goodbye!");
     process.exit();
 }
 
-function dispatchQuery(query, db) {
+function dispatch(query, controllers) {
     switch (query.choice) {
         case COMMANDS.EMPLOYEES_VIEW:
             break;
@@ -128,8 +59,78 @@ function dispatchQuery(query, db) {
     }
 }
 
-async function displayUserChoices(db) {
-    return dispatchQuery(await prompt([QUERY_LIST]), db);
-}
+module.exports = function ({ controllers, utils }) {
+    utils.toEnum(COMMANDS);
 
-exports.displayUserChoices = displayUserChoices;
+    const QUERIES = Object.freeze({
+        type: "list",
+        name: "choice",
+        message: "What would you like to do?",
+        choices: [
+            {
+                name: "View employees",
+                value: COMMANDS.EMPLOYEES_VIEW,
+            },
+            // {
+            //     name: "View employees by department",
+            //     value: COMMANDS.EMPLOYEES_VIEW_BY_DEPARTMENT,
+            // },
+            // {
+            //     name: "View employees by manager",
+            //     value: COMMANDS.EMPLOYEES_VIEW_BY_MANAGER,
+            // },
+            // {
+            //     name: "Add employee",
+            //     value: COMMANDS.EMPLOYEES_ADD,
+            // },
+            // {
+            //     name: "Remove employee",
+            //     value: COMMANDS.DEPARTMENTS_REMOVE,
+            // },
+            // {
+            //     name: "Update Employee Role",
+            //     value: COMMANDS.EMPLOYEES_UPDATE_ROLE,
+            // },
+            // {
+            //     name: "Update Employee Manager",
+            //     value: COMMANDS.EMPLOYEES_UPDATE_MANAGER,
+            // },
+            // {
+            //     name: "View All Roles",
+            //     value: COMMANDS.ROLES_VIEW,
+            // },
+            // {
+            //     name: "Add Role",
+            //     value: COMMANDS.ROLES_ADD,
+            // },
+            // {
+            //     name: "Remove Role",
+            //     value: COMMANDS.ROLES_REMOVE,
+            // },
+            // {
+            //     name: "View All Departments",
+            //     value: COMMANDS.DEPARTMENTS_VIEW,
+            // },
+            // {
+            //     name: "Add Department",
+            //     value: COMMANDS.DEPARTMENTS_ADD,
+            // },
+            // {
+            //     name: "Remove Department",
+            //     value: COMMANDS.DEPARTMENTS_REMOVE,
+            // },
+            // {
+            //     name: "View Total Utilized Budget By Department",
+            //     value: COMMANDS.DEPARTMENTS_VIEW_SALARIES,
+            // },
+            {
+                name: "Quit",
+                value: COMMANDS.QUIT,
+            },
+        ],
+    });
+
+    this.display = async function display() {
+        return dispatch(await prompt([QUERIES]), controllers);
+    }
+}
