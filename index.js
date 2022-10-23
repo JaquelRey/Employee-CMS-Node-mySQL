@@ -134,6 +134,11 @@ function quit() {
     console.log("Goodbye!");
     process.exit();
 }
+
+async function displayUserChoices() {
+    return dispatchQuery(await prompt([QUERY_LIST]));
+}
+
 //destructuring db funcs 
 const { addEmps, updateEmps, removeEmps,
     updateEmpsManager, viewAllEmps, viewEmpsByDept,
@@ -147,13 +152,6 @@ async function start() {
     const logoart = logo({ name: 'Employee Manager' }).render();
     console.log(logoart);
     return await callStack();
-}
-
-async function userChoices() {
-    const query = await prompt([queries]);
-    const chosen = query.choice;
-    // dispatch table selects next action
-    return dispatchOne(chosen);
 }
 
 // func that will begin process
