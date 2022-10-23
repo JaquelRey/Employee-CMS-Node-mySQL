@@ -139,29 +139,18 @@ async function displayUserChoices() {
     return dispatchQuery(await prompt([QUERY_LIST]));
 }
 
+(async function () {
+    const db = await database.connect({ verbose: false });
+    console.log(logo({ name: 'Employee Manager' }).render());
+    await displayUserChoices();
+}());
+
 //destructuring db funcs 
 const { addEmps, updateEmps, removeEmps,
     updateEmpsManager, viewAllEmps, viewEmpsByDept,
     viewEmpsByManager, viewManagers,
     addRoles, removeRoles, viewAllRoles,
     addDepts, viewAllDepts, viewDeptBudgets } = db
-
-// exit process
-
-async function start() {
-    const logoart = logo({ name: 'Employee Manager' }).render();
-    console.log(logoart);
-    return await callStack();
-}
-
-// func that will begin process
-async function callStack() {
-    return await userChoices().then(
-        callStack()
-    );
-}
-// do I need another await on callStack??
-
 
 // employee funcs
 
