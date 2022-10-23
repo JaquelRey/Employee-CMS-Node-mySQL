@@ -1,4 +1,31 @@
-const connection = require("./connection");
+const databaseConfig = require('../configs/database.js');
+
+const mysql = require("./mysql.js");
+const sqlite = require("./sqlite.js");
+
+async function connect({ verbose }) {
+  const log = (_) => verbose && console.log(_);
+
+  try {
+    log('Connecting to MySQL Database...');
+    const connection = await mysql.init(databaseConfig.mysql);
+    log('Connected to MySQL server.');
+    return connection;
+  } catch (_error) {
+    log('Could not connect to MySQL server!');
+  }
+  try {
+    log('Connecting to SQLite Database...');
+    const connection = sqlite.init(databaseConfig.sqlite);
+    log('Connected to SQLite server.');
+    return connection;
+  } catch (_error) {
+    log('Could not connect to SQLite server!');
+  }
+  throw ('Unable to connect to database.');
+}
+
+exports.connect = connect;
 
 class DB {
   constructor(connection) {
@@ -129,5 +156,3 @@ class DB {
       );
   }
 }
-
-module.exports = new DB(connection);
