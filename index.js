@@ -129,6 +129,11 @@ function dispatchQuery(query) {
             return quit();
     }
 }
+
+function quit() {
+    console.log("Goodbye!");
+    process.exit();
+}
 //destructuring db funcs 
 const { addEmps, updateEmps, removeEmps,
     updateEmpsManager, viewAllEmps, viewEmpsByDept,
@@ -137,10 +142,6 @@ const { addEmps, updateEmps, removeEmps,
     addDepts, viewAllDepts, viewDeptBudgets } = db
 
 // exit process
-function QUIT() {
-    console.log("Goodbye!");
-    process.exit();
-}
 
 async function start() {
     const logoart = logo({ name: 'Employee Manager' }).render();
