@@ -7,6 +7,24 @@ const database = require('./database');
 
 const { toEnum } = require('./utils');
 
+const COMMANDS = {
+    EMPLOYEES_VIEW                                             /**/: undefined,
+    EMPLOYEES_VIEW_BY_DEPARTMENT                               /**/: undefined,
+    EMPLOYEES_VIEW_BY_MANAGER                                  /**/: undefined,
+    EMPLOYEES_ADD                                              /**/: undefined,
+    EMPLOYEES_REMOVE                                           /**/: undefined,
+    EMPLOYEES_UPDATE_ROLE                                      /**/: undefined,
+    EMPLOYEES_UPDATE_MANAGER                                   /**/: undefined,
+    ROLES_VIEW                                                 /**/: undefined,
+    ROLES_ADD                                                  /**/: undefined,
+    ROLES_REMOVE                                               /**/: undefined,
+    DEPARTMENTS_VIEW                                           /**/: undefined,
+    DEPARTMENTS_ADD                                            /**/: undefined,
+    DEPARTMENTS_REMOVE                                         /**/: undefined,
+    DEPARTMENTS_VIEW_SALARIES                                  /**/: undefined,
+    QUIT                                                       /**/: undefined,
+}
+toEnum(COMMANDS);
 //destructuring db funcs 
 const { addEmps, updateEmps, removeEmps,
     updateEmpsManager, viewAllEmps, viewEmpsByDept,
