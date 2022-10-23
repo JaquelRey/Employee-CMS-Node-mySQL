@@ -1,8 +1,11 @@
 const { prompt } = require('inquirer');
 const logo = require('asciiart-logo');
-require('console.table');
-const db = require('./db');
-const queries = require('./queries')
+//require('console.table');
+
+const database = require('./database');
+//const queries = require('./queries')
+
+const { toEnum } = require('./utils');
 
 //destructuring db funcs 
 const { addEmps, updateEmps, removeEmps,
