@@ -7,20 +7,20 @@ const viewEmp = async () => {
   return employees
 }
 
-const viewDepts = async () => { 
+const viewDepts = async () => {
   const [rows] = await db.viewAllDepts()
   const departments = rows
   return departments
- }
+}
 
-const viewRoles = async () => { 
+const viewRoles = async () => {
   const [rows] = await db.viewAllRoles()
   const roles = rows
   return roles
 }
 
 // choices to populate prompts
-const empChoices = async () => { 
+const empChoices = async () => {
   const choices = await viewEmp()
   return Promise.all(choices.map(({ id, first_name, last_name }) => ({
     name: `${first_name} ${last_name}`,
@@ -28,7 +28,7 @@ const empChoices = async () => {
   })))
 }
 
-const deptChoices = async () => { 
+const deptChoices = async () => {
   let choices = await viewDepts.map(({ id, name }) => ({
     name: name,
     value: id
@@ -36,86 +36,15 @@ const deptChoices = async () => {
   return choices
 }
 
-const roleChoices = async () => { 
+const roleChoices = async () => {
   let choices = await viewRoles.map(({ id, title }) => ({
-  name: title,
-  value: id
-}))
+    name: title,
+    value: id
+  }))
   return choices
 }
 
-const choiceResolver = async (type) => {
-  
-}
-
-
-const queries = {
-  type: "list",
-  name: "choice",
-  message: "What would you like to do?",
-  choices: [
-    {
-      name: "View employees",
-      value: "VIEW_EMP",
-    },
-    {
-      name: "View employees by department",
-      value: "VIEW_EMP_BY_DEPT",
-    },
-    {
-      name: "View employees by manager",
-      value: "VIEW_EMP_BY_MANAGER",
-    },
-    {
-      name: "Add employee",
-      value: "ADD_EMP",
-    },
-    {
-      name: "Remove employee",
-      value: "REMOVE_EMP",
-    },
-    {
-      name: "Update Employee Role",
-      value: "UPDATE_EMP_ROLE",
-    },
-    {
-      name: "Update Employee Manager",
-      value: "UPDATE_EMP_MANAGER",
-    },
-    {
-      name: "View All Roles",
-      value: "VIEW_ROLES",
-    },
-    {
-      name: "Add Role",
-      value: "ADD_ROLE",
-    },
-    {
-      name: "Remove Role",
-      value: "REMOVE_ROLE",
-    },
-    {
-      name: "View All Departments",
-      value: "VIEW_DEPTS",
-    },
-    {
-      name: "Add Department",
-      value: "ADD_DEPT",
-    },
-    {
-      name: "Remove Department",
-      value: "REMOVE_DEPT",
-    },
-    {
-      name: "View Total Utilized Budget By Department",
-      value: "DEPT_SALARIES",
-    },
-    {
-      name: "Quit",
-      value: "QUIT",
-    },
-  ],
-};
+const choiceResolver = async (type) => { }
 
 const nameQuery = [
   {
@@ -137,7 +66,7 @@ const roleQuery = [{
   name: "roleId",
   message: "What is the employee's role?",
   choices: await roleChoices()
-}, 
+},
 {
   type: "list",
   name: "roleId",
@@ -237,10 +166,10 @@ const deptQuery = [{
 ]
 
 module.exports = {
-  queries: queries, 
-  nameQuery: nameQuery, 
-  roleQuery: roleQuery, 
-  managerQuery: managerQuery, 
-  empQuery: empQuery, 
+  queries: queries,
+  nameQuery: nameQuery,
+  roleQuery: roleQuery,
+  managerQuery: managerQuery,
+  empQuery: empQuery,
   deptQuery: deptQuery
 }
