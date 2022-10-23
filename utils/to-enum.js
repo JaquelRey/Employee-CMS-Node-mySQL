@@ -1,6 +1,11 @@
+let id = 1;
+
 module.exports = function toEnum(obj) {
-    let id = 1;
     for (const key of Object.keys(obj)) {
-        obj[key] = id++;
+        if (obj[key] === undefined) {
+            obj[key] = id++;
+        } else {
+            toEnum(obj[key]);
+        }
     }
 }
