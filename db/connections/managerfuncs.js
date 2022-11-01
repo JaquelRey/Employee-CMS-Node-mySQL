@@ -1,6 +1,6 @@
 const connection = require("../connection");
 
-export class ManagerDb {
+class ManagerDb {
   constructor(connection) {
     this.connection = connection;
   }

@@ -4,17 +4,43 @@ require("console.table");
 const db = require("./db");
 const { queries, nameQuery, roleQuery, managerQuery } = require("./queries");
 const { newEmp } = require("./constructors");
+const employeefuncs = require("./db/connections/employeefuncs");
 
 //destructuring db funcs
-const { addEmps, updateEmps, removeEmps, updateEmpsManager, viewAllEmps } =
-  Empdb(
-    //display logo and call to start stack recursion
-    async () => {
-      const logoart = logo({ name: "Employee Manager" }).render();
-      console.log(logoart);
-      return await callStack();
-    }
-  );
+//employee
+const {
+  addEmps,
+  updateEmps,
+  removeEmps,
+  updateEmpsManager,
+  viewAllEmps,
+} = require("./db/connections/employeefuncs");
+//manager
+const {
+  viewEmpsByManager,
+  viewAllManagers,
+} = require("./db/connections/managerfuncs");
+//role
+const {
+  addRoles,
+  removeRoles,
+  viewAllRoles,
+} = require("./db/connections/rolefuncs");
+//department
+const {
+  addDepts,
+  removeDepts,
+  viewAllDepts,
+  viewEmpsByDept,
+  viewDeptBudgets,
+} = require("./db/connections/departmentfuncs");
+
+//display logo and call to start stack recursion
+async () => {
+  const logoart = logo({ name: "Employee Manager" }).render();
+  console.log(logoart);
+  callStack();
+};
 
 // func that will begin process
 const callStack = async () => {
@@ -46,18 +72,27 @@ const addEmp = async () => {
     role.roleId,
     manager.managerId
   );
+  console.log("\n");
+  console.log("Adding employee...");
+  console.log("\n");
   return Promise.resolve(addEmps(emp));
 };
 
 const removeEmp = async () => {
   const emp = await prompt(empQuery[0]);
   const res = await removeEmps(emp.employeeId);
+  console.log("\n");
+  console.log("Removing employee...");
+  console.log("\n");
   return Promise.resolve(res);
 };
 
 const updateEmpRole = async () => {
   const emp = await prompt(empQuery[1]);
   const res = await updateEmps(emp.employeeId);
+  console.log("\n");
+  console.log("Updating employee role...");
+  console.log("\n");
   return Promise.resolve(res);
 };
 
@@ -65,12 +100,18 @@ const updateEmpManager = async () => {
   const emp = await prompt(empQuery[2]);
   const managers = await prompt(managerQuery[1]);
   const res = await updateEmpsManager(emp.employeeId, managers.managerId);
+  console.log("\n");
+  console.log("Updating employee manager...");
+  console.log("\n");
   return Promise.resolve(res);
 };
 
 const viewEmpByDept = async () => {
   const dept = await prompt(deptQuery[0]);
   const res = await viewEmpsByDept(dept.departmentId);
+  console.log("\n");
+  console.log(`Viewing employees from ${dept.name}...`);
+  console.log("\n");
   return Promise.resolve(res);
 };
 
@@ -80,9 +121,9 @@ const viewEmpByManager = async () => {
   return Promise.resolve(res);
 };
 
-const viewAllManagers = async () => {
+const viewManagers = async () => {
   const manager = await prompt(managerQuery[2]);
-  const res = await viewEmpsByManager(manager.managerId);
+  const res = await viewAllManagers();
   return Promise.resolve(res);
 };
 
@@ -98,6 +139,8 @@ const addRole = async () => {};
 
 const removeRole = async () => {};
 
+const viewRoles = async () => {};
+
 const dispatchOne = async (chosen) => {
   const list = {
     //employee
@@ -108,7 +151,7 @@ const dispatchOne = async (chosen) => {
     VIEW_EMP_BY_MANAGER: viewEmpByManager(),
     UPDATE_EMP_ROLE: updateEmpRole(),
     UPDATE_EMP_MANAGER: updateEmpManager(),
-    VIEW_MANAGERS: viewAllManagers(),
+    VIEW_MANAGERS: viewManagers(),
 
     //department
     ADD_DEPT: addDept(),
@@ -119,7 +162,7 @@ const dispatchOne = async (chosen) => {
     //roles
     ADD_ROLE: addRole(),
     REMOVE_ROLE: removeRole(),
-    VIEW_ROLES: viewAllRoles(),
+    VIEW_ROLES: viewRoles(),
 
     //exit process
     QUIT: quit(),
