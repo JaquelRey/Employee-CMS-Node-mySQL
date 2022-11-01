@@ -1,25 +1,32 @@
 const db = require('./db')
 
-// find items in db
+// return all employees and their data
 const viewEmp = async () => {
   const [rows] = await db.viewAllEmps()
   const employees = rows
   return employees
 }
-
+// return all departments and their data
 const viewDepts = async () => { 
   const [rows] = await db.viewAllDepts()
   const departments = rows
   return departments
  }
-
+// return all roles and their data
 const viewRoles = async () => { 
   const [rows] = await db.viewAllRoles()
   const roles = rows
   return roles
 }
+//return all managers and their data
+const viewManagers = async () => {
+  const [rows] = await db.viewAllManagers()
+  const managers = rows
+  return managers
+}
 
-// choices to populate prompts
+// choices to populate prompts, mapped from above data returns
+// return readable lists for user selections
 const empChoices = async () => { 
   const choices = await viewEmp()
   return Promise.all(choices.map(({ id, first_name, last_name }) => ({
@@ -44,7 +51,15 @@ const roleChoices = async () => {
   return choices
 }
 
-const choiceResolver = async (type) => {
+const managerChoices = async () => { 
+  const choices = viewManagers.map(({ id, first_name, last_name }) => ({
+    name: `${first_name} ${last_name}`,
+    value: id
+  }))
+  return choices
+}
+
+const choiceResolver = async (mapped, value) => {
   
 }
 
@@ -119,11 +134,11 @@ const queries = {
 
 const nameQuery = [
   {
-    name: "first_name",
+    name: "first",
     message: "What is the employee's first name?"
   },
   {
-    name: "last_name",
+    name: "last",
     message: "What is the employee's last name?"
   }
 ]
@@ -187,7 +202,7 @@ const managerQuery = [{
 {
   type: "list",
   name: "managerId",
-  message: "Which employee do you want to see direct reports for?",
+  message: "Which manager's team would you like to view?",
   choices: await managerChoices()
 }]
 // 1. select emp to remove
