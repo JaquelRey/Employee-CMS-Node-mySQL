@@ -1,11 +1,8 @@
 const { prompt } = require("inquirer");
 const logo = require("asciiart-logo");
 require("console.table");
-const db = require("./db");
 const { queries, nameQuery, roleQuery, managerQuery } = require("./queries");
-const { newEmp } = require("./constructors");
-const employeefuncs = require("./db/connections/employeefuncs");
-
+const { NewEmp, NewDept } = require("./constructors");
 //destructuring db funcs
 //employee
 const {
@@ -62,11 +59,19 @@ const userChoices = async () => {
 
 // employee funcs
 
+const viewEmps = async () => {
+    const res = await viewAllEmps();
+    console.log("\n");
+    console.log(`Viewing all employees...`);
+    console.log("\n");
+    return Promise.resolve(res);
+  };
+
 const addEmp = async () => {
   const name = await prompt(nameQuery);
   const role = await prompt(roleQuery[0]);
   const manager = await prompt(managerQuery[0]);
-  const emp = await newEmp(
+  const emp = new NewEmp(
     name.first,
     name.last,
     role.roleId,
@@ -118,35 +123,90 @@ const viewEmpByDept = async () => {
 const viewEmpByManager = async () => {
   const manager = await prompt(managerQuery[2]);
   const res = await viewEmpsByManager(manager.managerId);
+  console.log("\n");
+  console.log(`Viewing employees on ${manager.first}'s team...`);
+  console.log("\n");
   return Promise.resolve(res);
 };
 
 const viewManagers = async () => {
-  const manager = await prompt(managerQuery[2]);
   const res = await viewAllManagers();
+  console.log("\n");
+  console.log(`Viewing all managers...`);
+  console.log("\n");
+  return Promise.resolve(res);
+};
+// !!!!!!!!!!!!! CONSTRUCTORS NEEDED
+// department funcs
+const addDept = async () => {
+  const answer = await prompt(deptQuery[1]);
+  const dept = NewDept(answer.name)
+  console.log("\n");
+  console.log("Adding department...");
+  console.log("\n");
+  return Promise.resolve(addDepts(dept));
+};
+
+const removeDept = async () => {
+  const dept = await prompt(deptQuery[2]);
+  const res = await removeDepts(dept.departmentId);
+  console.log("\n");
+  console.log("Removing department...");
+  console.log("\n");
   return Promise.resolve(res);
 };
 
-// department funcs
-const addDept = async () => {};
-
-const removeDept = async () => {};
-
 const deptBudget = async () => {};
 
+const viewDepts = async () => {
+  const res = await viewAllDepts();
+  console.log("\n");
+  console.log(`Viewing all departments...`);
+  console.log("\n");
+  return Promise.resolve(res);
+};
+
+
 // role funcs
-const addRole = async () => {};
+const addRole = async () => {
+  const name = await prompt(nameQuery);
+  const role = await prompt(roleQuery[0]);
+  const manager = await prompt(managerQuery[0]);
+  const emp = await newEmp(
+    name.first,
+    name.last,
+    role.roleId,
+    manager.managerId
+  );
+  console.log("\n");
+  console.log("Adding employee...");
+  console.log("\n");
+  return Promise.resolve(addEmps(emp));
+};
 
-const removeRole = async () => {};
+const removeRole = async () => {
+  const emp = await prompt(empQuery[0]);
+  const res = await removeEmps(emp.employeeId);
+  console.log("\n");
+  console.log("Removing employee...");
+  console.log("\n");
+  return Promise.resolve(res);
+};
 
-const viewRoles = async () => {};
+const viewRoles = async () => {
+  const res = await viewAllManagers();
+  console.log("\n");
+  console.log(`Viewing all managers...`);
+  console.log("\n");
+  return Promise.resolve(res);
+};
 
 const dispatchOne = async (chosen) => {
   const list = {
     //employee
     ADD_EMP: addEmp(),
     REMOVE_EMP: removeEmp(),
-    VIEW_EMP: viewAllEmps(),
+    VIEW_EMP: viewEmps(),
     VIEW_EMP_BY_DEPT: viewEmpByDept(),
     VIEW_EMP_BY_MANAGER: viewEmpByManager(),
     UPDATE_EMP_ROLE: updateEmpRole(),
@@ -156,7 +216,7 @@ const dispatchOne = async (chosen) => {
     //department
     ADD_DEPT: addDept(),
     REMOVE_DEPT: removeDept(),
-    VIEW_DEPTS: viewAllDepts(),
+    VIEW_DEPTS: viewDepts(),
     DEPT_SALARIES: deptBudget(),
 
     //roles

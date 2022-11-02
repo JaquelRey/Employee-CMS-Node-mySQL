@@ -134,10 +134,12 @@ const queries = {
 
 const nameQuery = [
   {
+    type: "input",
     name: "first",
     message: "What is the employee's first name?"
   },
   {
+    type: "input",
     name: "last",
     message: "What is the employee's last name?"
   }
@@ -160,11 +162,13 @@ const roleQuery = [{
   choices: await roleChoices()
 },
 [
-  {
+  { 
+    type: "input",
     name: "title",
     message: "What is the name of the role?"
   },
   {
+    type: "input",
     name: "salary",
     message: "What is the salary of the role?"
   },
@@ -237,6 +241,7 @@ const deptQuery = [{
   choices: await deptChoices()
 },
 {
+  type: "input",
   name: "name",
   message: "What is the name of the department?"
 },
