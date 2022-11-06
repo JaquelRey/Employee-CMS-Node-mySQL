@@ -1,68 +1,4 @@
-const db = require('./db')
-
-// return all employees and their data
-const viewEmp = async () => {
-  const [rows] = await db.viewAllEmps()
-  const employees = rows
-  return employees
-}
-// return all departments and their data
-const viewDepts = async () => { 
-  const [rows] = await db.viewAllDepts()
-  const departments = rows
-  return departments
- }
-// return all roles and their data
-const viewRoles = async () => { 
-  const [rows] = await db.viewAllRoles()
-  const roles = rows
-  return roles
-}
-//return all managers and their data
-const viewManagers = async () => {
-  const [rows] = await db.viewAllManagers()
-  const managers = rows
-  return managers
-}
-
-// choices to populate prompts, mapped from above data returns
-// return readable lists for user selections
-const empChoices = async () => { 
-  const choices = await viewEmp()
-  return Promise.all(choices.map(({ id, first_name, last_name }) => ({
-    name: `${first_name} ${last_name}`,
-    value: id
-  })))
-}
-
-const deptChoices = async () => { 
-  let choices = await viewDepts.map(({ id, name }) => ({
-    name: name,
-    value: id
-  }))
-  return choices
-}
-
-const roleChoices = async () => { 
-  let choices = await viewRoles.map(({ id, title }) => ({
-  name: title,
-  value: id
-}))
-  return choices
-}
-
-const managerChoices = async () => { 
-  const choices = viewManagers.map(({ id, first_name, last_name }) => ({
-    name: `${first_name} ${last_name}`,
-    value: id
-  }))
-  return choices
-}
-
-const choiceResolver = async (mapped, value) => {
-  
-}
-
+const {inquirerChoices} = require("./db/selection");
 
 const queries = {
   type: "list",
@@ -135,31 +71,31 @@ const queries = {
 const nameQuery = [
   {
     type: "input",
-    name: "first",
+    name: "first_name",
     message: "What is the employee's first name?"
   },
   {
     type: "input",
-    name: "last",
+    name: "last_name",
     message: "What is the employee's last name?"
   }
 ]
 
-// 1. choose new emp role
-// 2. update emp role
-// 3. new role
-// 4. remove role
+// 0. choose new emp role
+// 1. update emp role
+// 2. new role
+// 3. remove role
 const roleQuery = [{
   type: "list",
   name: "roleId",
   message: "What is the employee's role?",
-  choices: await roleChoices()
+  choices: inquirerChoices('role')
 }, 
 {
   type: "list",
   name: "roleId",
   message: "Which role do you want to assign the selected employee?",
-  choices: await roleChoices()
+  choices: inquirerChoices('role')
 },
 [
   { 
@@ -174,9 +110,9 @@ const roleQuery = [{
   },
   {
     type: "list",
-    name: "department_id",
+    name: "departmentId",
     message: "Which department does the role belong to?",
-    choices: await deptChoices()
+    choices: inquirerChoices('department')
   }
 ],
 {
@@ -184,61 +120,61 @@ const roleQuery = [{
   name: "roleId",
   message:
     "Which role do you want to remove? (Warning: This will also remove employees)",
-  choices: await roleChoices()
+  choices: inquirerChoices('role')
 }]
 
-// 1. choose new emp manager
-// 2. update emp manager
-// 3. view emp by manager
+// 0. choose new emp manager
+// 1. update emp manager
+// 2. view emp by manager
 const managerQuery = [{
   type: "list",
   name: "managerId",
   message: "Who is the employee's manager?",
-  choices: await managerChoices()
+  choices: inquirerChoices('manager')
 },
 {
   type: "list",
   name: "managerId",
   message:
     "Which employee do you want to set as manager for the selected employee?",
-  choices: await managerChoices()
+  choices: inquirerChoices('manager')
 },
 {
   type: "list",
   name: "managerId",
   message: "Which manager's team would you like to view?",
-  choices: await managerChoices()
+  choices: inquirerChoices('manager')
 }]
-// 1. select emp to remove
-// 2. select emp to update
-// 3. select emp to update manager
+// 0. select emp to remove
+// 1. select emp to update
+// 2. select emp to update manager
 const empQuery = [{
   type: "list",
   name: "employeeId",
   message: "Which employee do you want to remove?",
-  choices: await empChoices()
+  choices: inquirerChoices('employee')
 },
 {
   type: "list",
   name: "employeeId",
   message: "Which employee's role do you want to update?",
-  choices: await empChoices()
+  choices: inquirerChoices('employee')
 },
 {
   type: "list",
   name: "employeeId",
   message: "Which employee's manager do you want to update?",
-  choices: await empChoices()
+  choices: inquirerChoices('employee')
 }]
 
-// 1. view emp by dept
-// 2. add new dept
-// 3. remove dept
+// 0. view emp by dept
+// 1. add new dept
+// 2. remove dept
 const deptQuery = [{
   type: "list",
   name: "departmentId",
   message: "Which department would you like to see employees for?",
-  choices: await deptChoices()
+  choices: inquirerChoices('department')
 },
 {
   type: "input",
@@ -250,7 +186,7 @@ const deptQuery = [{
   name: "departmentId",
   message:
     "Which department would you like to remove? (Warning: This will also remove associated roles and employees)",
-  choices: await deptChoices()
+  choices: inquirerChoices('department')
 },
 
 

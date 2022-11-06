@@ -20,12 +20,12 @@ VALUES
 
 INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES
-    ('Dewey', 'Duck', 1, 5),
-    ('Huey', 'Duck', 2, 5),
-    ('Louey', 'Duck', 3, 5),
-    ('McScrooge', 'McDuck', 4, NULL),
-    ('Donald', 'Duck', 5, NULL),
-    ('Launchpad', 'McQuack', 6, 4),
-    ('Gyro', 'Gearloose', 7, 4),
-    ('Bentina', 'Beakley', 8, 4)
-    ('Webby', 'Vanderquack', 8, 8);
+    ('Bentina', 'Beakley', 7, NULL),
+    ('McScrooge', 'McDuck', 1, NULL),
+    ('Donald', 'Duck', 3, NULL),
+    ('Dewey', 'Duck', 2, 3),
+    ('Huey', 'Duck', 2, 3),
+    ('Louey', 'Duck', 2, 3),
+    ('Launchpad', 'McQuack', 3, 2),
+    ('Gyro', 'Gearloose', 4, 2),
+    ('Webby', 'Vanderquack', 8, 1);
